@@ -1,0 +1,15 @@
+@import "~bootstrap/scss/bootstrap";
+
+$palette-colors: (
+        "light-grey"  : #BDC0C3,
+        "mid-grey"    : #92999C,
+        "dark-grey"   : #626A6C,
+        "mid-yellow"  : #DFBE70,
+        "light-yellow": #F4DDB4,
+);
+
+$primary-color: #5c7fd8;
+
+body{
+    background-color:$primary-color;
+}
