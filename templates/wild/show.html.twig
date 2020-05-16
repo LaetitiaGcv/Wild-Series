@@ -1,0 +1,10 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if slug  %}
+    <h1 class="text-center mt-5">{{ slug }}</h1>
+    {% else %}
+    <h1> Merci de selectionner une série</h1>
+    {% endif %}
+{% endblock %}
