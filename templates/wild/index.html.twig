@@ -9,8 +9,9 @@
             <h2>{{ loop.index }} / {{ program.title }} - Catégorie : {{ program.category.name }}</h2>
             <p>{{ program.summary }}</p>
         </div>
+        <a href="{{ path('wild_show_programId', {programId: program.id({' ': '-'})}) }}" class="btn btn-secondary">Toute les saisons</a>
     {% else %}
-       Merci de faire une nouvelle recherche.
+        Merci de faire une nouvelle recherche.
     {% endfor %}
 
 
@@ -25,4 +26,4 @@
     <a href="{{ path('app_index') }}">
         Retour à l'accueil
     </a>
-{% endblock %}
+{% endblock %} 
