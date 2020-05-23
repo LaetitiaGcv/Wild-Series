@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% form_theme form 'foundation_5_layout.html.twig' %}
+    {{ form_start(form) }}
+    {{ form_row(form.add) }}
+    <button type="submit" name="btnSearch">Envoyer </button>
+    {{ form_end(form) }}
+
+
+{% endblock %}
