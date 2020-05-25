@@ -2,24 +2,28 @@
 
 namespace App\Form;
 
-use App\Entity\Category;
+use App\Entity\Episode;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CategoryType extends AbstractType
+class EpisodeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', null, ['label' => 'Nom'])
+            ->add('title', null, ['label' => 'Titre'])
+            ->add('number', null, ['label' => 'Numéro'])
+            ->add('synopsis', null, ['label' => 'Synopsis'])
+            ->add('season', null, ['label' => 'Saison'])
+            
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Category::class,
+            'data_class' => Episode::class,
         ]);
     }
 }
