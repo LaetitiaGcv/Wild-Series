@@ -5,10 +5,14 @@ namespace App\Entity;
 use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ProgramRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\ProgramRepository", repositoryClass=ProgramRepository::class)
+ * @UniqueEntity("title", message="cette série existe déjà")
  */
 class Program
 {
@@ -21,11 +25,19 @@ class Program
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="ne me laisse pas tout vide")
+     * @Assert\Length(
+     *     min="5", minMessage="Le titre de la série {{value}} est trop courte, elle devrait dépasser {{ limit }} caractères",
+     *     max="255", maxMessage="Le titre de la série  {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères"
+     * )
      */
     private $title;
 
     /**
+     * @Assert\Regex(pattern="/plus belle la vie/i", match=false, message="on parle de vraies séries ici, déso")
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="ne me laisse pas tout vide")
+     * @ORM\Column(type="string", length=25)
      */
     private $summary;
 
