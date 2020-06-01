@@ -1,27 +1,40 @@
 {% block content %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">
+            <div class="logo-image">
+                <img src="https://zupimages.net/up/20/22/4qij.png" class="img-fluid">
+            </div>
+        </a>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Accueil<span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/wild/">Séries</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/program/">Index des séries</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/season/">Index des saisons</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/episode/">Index des épisodes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/program/new">Ajouter une série</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/wild/category/add/">Ajouter une catégorie</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/actor/">Index des acteurs</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Acceuil<span class="sr-only"></span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link">À propos</a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ path('wild_index') }}"> Série </a>
-            </li>
-            <li class="nav-item">
-
-            </li>
-        </ul>
-    </div>
-</nav>
 
 {% endblock %}
