@@ -4,11 +4,12 @@
 {% block body %}
 
 
-    <h1> Série : {{ program.title }}</h1>
+    <h1> Série : {{ program.title }} </h1
     {% for season in seasons %}
+
         <div>
         <a href="{{ path('wild_show_seasonId', {seasonId: season.id}) }}" > Saison {{ season.number }} </a>
-
+        </div>
 
     {% else %}
         Merci de faire une nouvelle recherche.
