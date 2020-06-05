@@ -62,6 +62,11 @@ class Program
      */
     private $actors;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $year;
+
     public function __construct()
     {
         $this->seasons = new ArrayCollection();
@@ -177,6 +182,18 @@ class Program
             $this->actors->removeElement($actor);
             $actor->removeProgram($this);
         }
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year): self
+    {
+        $this->year = $year;
 
         return $this;
     }
