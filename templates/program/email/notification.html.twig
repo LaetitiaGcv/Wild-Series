@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1>Une nouvelle série  vient d'être publiée sur Wild Séries !</h1>
+    <h2> {{ program.title }}</h2>
+    <p> {{program.summary}}</p>
+
+    <img src="{{ program.poster }}" alt="affiche de {{ program.title }}">
+    <div>
+        <a href="http://127.0.0.1:8000/">Wild Series</a>
+    </div>
+
+{% endblock %}
