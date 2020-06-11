@@ -17,6 +17,7 @@ class ProgramType extends AbstractType
             ->add('title', null, ['label' => 'Titre'])
             ->add('summary', null, ['label' => 'Synopsis'])
             ->add('poster', null, ['label' => 'Affiche', 'attr' => ['placeholder' => 'url']])
+            ->add('year',null, ['label'=> 'Année'])
             ->add('category', null, ['choice_label' => 'name', 'label' => 'Catégorie'])
         ;
         $builder->add('actors', EntityType::class, [
