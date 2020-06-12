@@ -4,12 +4,17 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\Program;
 use App\Entity\Season;
 use App\Entity\Episode;
 use App\Form\ProgramSearchType;
-use App\Repository\CategoryRepository;
+use App\Form\CommentType;
+use App\Controller\EntityManager;
+use App\Repository\CommentRepository;
 use App\Repository\ProgramRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,14 +52,14 @@ class WildController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $data     = $form->getData();
+            $data = $form->getData();
             $programs = $programRepository->findByTitle($data);
         }
 
         return $this->render(
             'wild/index.html.twig', [
                 'programs' => $programs,
-                'form'     => $form->createView(),
+                'form' => $form->createView(),
             ]
         );
     }
@@ -87,7 +92,7 @@ class WildController extends AbstractController
 
         return $this->render('wild/show.html.twig', [
             'program' => $program,
-            'slug'    => $slug,
+            'slug' => $slug,
         ]);
     }
 
@@ -106,9 +111,9 @@ class WildController extends AbstractController
             ->findBy(['category' => $category->getId()], ['id' => 'DESC'], 3);
 
         return $this->render('wild/category.html.twig', [
-            'category'      => $category,
+            'category' => $category,
             'category_name' => $categoryName,
-            'programs'      => $programs,
+            'programs' => $programs,
 
         ]);
 
@@ -152,34 +157,61 @@ class WildController extends AbstractController
             ->getRepository(Season::class)
             ->findOneBy(['id' => mb_strtolower($seasonId)]);
 
-        $program  = $season->getProgram();
+        $program = $season->getProgram();
         $episodes = $season->getEpisodes();
 
 
         return $this->render('wild/episodes.html.twig', [
             'episodes' => $episodes,
-            'program'  => $program,
-            'season'   => $season,
+            'program' => $program,
+            'season' => $season,
         ]);
     }
 
     /**
      * @Route("/episode/{id}", name="show_episode")
      * @param Episode $episode
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param CommentRepository $commentRepository
+     * @param UserRepository $userRepository
      * @return Response
      */
 
-    public function showEpisode(Episode $episode): Response
+    public function showEpisode(Episode $episode, Request $request, EntityManagerInterface $entityManager, CommentRepository $commentRepository, UserRepository $userRepository): Response
     {
-        $season  = $episode->getSeason();
+
+        $season = $episode->getSeason();
         $program = $season->getProgram();
+
+        $commentRepository = $this->getDoctrine()->getRepository(Comment::class);
+
+        $comments = $commentRepository->findBy(['episode' => $episode]);
+        $form = $this->createForm(CommentType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment = $form->getData();
+
+            $comment->setAuthor($userRepository->findOneBy(['email' => $this->getUser()->getUsername()]));
+            $comment->setEpisode($episode);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('wild_show_episode', ['id' => $episode->getId()]);
+        }
 
         return $this->render('wild/episode.html.twig', [
             'episode' => $episode,
             'program' => $program,
             'season'  => $season,
+            'comments' => $comments,
+            'form' => $form->createView(),
         ]);
 
     }
 
 }
+
+
+
