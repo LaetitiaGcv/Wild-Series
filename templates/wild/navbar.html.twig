@@ -14,32 +14,40 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/wild/">Séries</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/program/">Index des séries</a>
+                <li class="nav-item actor">
+                    <a class="dropdown-item" href="{{ path('actor_index') }}">Index des Acteurs </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/season/">Index des saisons</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/episode/">Index des épisodes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/program/new">Ajouter une série</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/wild/category/add/">Ajouter une catégorie</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/actor/">Index des acteurs</a>
-                </li>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item actor">
+                        <a class="nav-link" href="/wild/category/add/">Ajouter une catégorie</a>
+                    </li>
+                {% endif %}
+                {% if is_granted('ROLE_SUBSCRIBER') %}
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        CRUD
+                    </a>
+                    <li class="nav-item">
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="{{ path('program_index') }}">Index des Séries </a>
+                            <a class="dropdown-item" href="{{ path('season_index') }}">Index des Saisons</a>
+                            <a class="dropdown-item" href="{{ path('episode_index') }}">Index des Episodes</a>
+                        </div>
+                    </li>
+
+                    {% endif %}
             </ul>
         </div>
+
         {% if app.user %}
             {{ app.user.email }}
             <a href="{{ path('app_logout') }}"> Se déconnecter</a>
         {% else %}
             <a href="{{ path('app_login') }}"> Se connecter</a>
         {% endif %}
+
     </nav>
 
 
