@@ -6,28 +6,39 @@
         <h1> {{ program.title }} Saison : {{ season.number }}</h1>
     </div>
 
-        <div>
-            <h5> Episode : {{ episode.title }} </h5>
+    <div>
+        <h5> Episode : {{ episode.title }} </h5>
 
-            <p>Synopsis : {{ episode.synopsis }}</p>
+        <p>Synopsis : {{ episode.synopsis }}</p>
 
+    </div>
+    {% for comment in comments %}
+        <p>{{ comment.comment }}</p>
+        <p>{{ comment.rate }}</p>
+        <p>{{ comment.author.email }}</p>
+        {% if is_granted('ROLE_SUBSCRIBER') %}
+        {% if comment.author.id == app.user.id %}
+            {% include('comment/_delete_form.html.twig') %}
+        {% endif %}
+        {% endif %}
         </div>
-    {% for comment in comments|reverse %}
-
-        <li class="list-group-item">   {{ comment.comment }} </li>
-        <li> {{ comment.rate }}</li>
     {% endfor %}
     </ul>
     </div>
-    {% if app.user %}
-        <div class="container w-50">
-            <h5 class="text-center"> Ajouter un commentaire</h5>
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <button class="btn bg-warning">{{ button_label|default('Ajouter') }}</button>
-            {{ form_end(form) }}
-        </div>
+    {% if is_granted('ROLE_SUBSCRIBER') %}
+        {% if app.user %}
+            <div class="container w-50">
+                <h5 class="text-center"> Ajouter un commentaire</h5>
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button class="btn bg-warning">{{ button_label|default('Ajouter') }}</button>
+                {{ form_end(form) }}
+
+            </div>
+
+        {% endif %}
     {% endif %}
+
 
     <a href="{{ path('app_index') }}">
         Page d'accueil
