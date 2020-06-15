@@ -36,7 +36,7 @@ class WildController extends AbstractController
      */
     public function index(ProgramRepository $programRepository, Request $request): Response
     {
-        $programs = $programRepository->findAll();
+        $programs = $programRepository->findAllWithCategories();
 
         if (!$programs) {
             throw $this->createNotFoundException(
@@ -53,7 +53,8 @@ class WildController extends AbstractController
 
         if ($form->isSubmitted()) {
             $data = $form->getData();
-            $programs = $programRepository->findByTitle($data);
+            $programs = $programRepository
+                ->findByTitle($data);
         }
 
         return $this->render(
@@ -83,7 +84,8 @@ class WildController extends AbstractController
         );
         $program = $this->getDoctrine()
             ->getRepository(Program::class)
-            ->findOneBy(['title' => mb_strtolower($slug)]);
+            ->findOneBy(['slug' => $slug]);
+
         if (!$program) {
             throw $this->createNotFoundException(
                 'No program with ' . $slug . ' title, found in program\'s table.'
