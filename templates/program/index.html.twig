@@ -29,9 +29,9 @@
                     {% endfor %}
                 </td>
                 <td>
-                    <a href="{{ path('program_show', {'slug': program.slug}) }}">show</a>
+                    <a href="{{ path('program_show', {'slug': program.slug}) }}" class="text-success btn btn-warning mt-3">show</a>
                     {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('program_edit', {'slug': program.slug}) }}">edit</a>
+                        <a href="{{ path('program_edit', {'slug': program.slug}) }}" class=" text-success btn btn-warning mt-3 mb-3">edit</a>
                     {% endif %}
                 </td>
             </tr>

@@ -52,6 +52,7 @@ class ProgramController extends AbstractController
             $program->setSlug($slug);
             $entityManager->persist($program);
             $entityManager->flush();
+            $this->addFlash('success', 'La nouvelle série : ' . $program->getTitle() . ' vient d\'être ajoutée');
 
             $email = (new Email())
                 ->from($this->getParameter('mailer_from'))
@@ -99,6 +100,8 @@ class ProgramController extends AbstractController
             $program->setSlug($slug);
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', 'La série : ' . $program->getTitle() . ' vient d\'être modifiée');
+
             return $this->redirectToRoute('program_index');
         }
 
@@ -120,6 +123,7 @@ class ProgramController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($program);
             $entityManager->flush();
+            $this->addFlash('danger', 'La série : ' . $program->getTitle() . ' vient d\'être supprimée');
         }
 
         return $this->redirectToRoute('program_index');
