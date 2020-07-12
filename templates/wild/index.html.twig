@@ -18,6 +18,7 @@
     {{ form_end(form) }}
 
     <h1>Toutes les séries par genre : </h1>
+
     {% for program in programs %}
         <div class="card-body overflow-auto">
             <h2 class="card-title ">{{ program.title }}</h2> <h5> Catégorie : {{ program.category.name }}</h5>
@@ -33,6 +34,7 @@
                 </div>
             </div>
         </div>
+
 
         <div class="container-fluid">
             <a href="{{ path('wild_show_programId', {programId: program.id({' ': '-'})}) }}"

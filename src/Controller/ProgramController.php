@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Actor;
+use App\Entity\User;
 use App\Entity\Program;
 use App\Form\ProgramType;
 use App\Repository\ProgramRepository;
 use App\Service\Slugify;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/program")
@@ -24,6 +26,7 @@ class ProgramController extends AbstractController
      * @Route("/", name="program_index", methods={"GET"})
      * @param ProgramRepository $programRepository
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(ProgramRepository $programRepository): Response
     {
@@ -39,6 +42,7 @@ class ProgramController extends AbstractController
      * @param MailerInterface $mailer
      * @return Response
      * @throws TransportExceptionInterface
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, Slugify $slugify, MailerInterface $mailer): Response
     {
@@ -75,6 +79,7 @@ class ProgramController extends AbstractController
      * @Route("/{slug}", name="program_show", methods={"GET"})
      * @param Program $program
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function show(Program $program): Response
     {
@@ -88,6 +93,7 @@ class ProgramController extends AbstractController
      * @param Request $request
      * @param Program $program
      * @param Slugify $slugify
+     * @IsGranted("ROLE_ADMIN")
      * @return Response
      */
     public function edit(Request $request, Program $program, Slugify $slugify): Response
@@ -116,6 +122,7 @@ class ProgramController extends AbstractController
      * @param Request $request
      * @param Program $program
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Program $program): Response
     {
@@ -127,5 +134,29 @@ class ProgramController extends AbstractController
         }
 
         return $this->redirectToRoute('program_index');
+    }
+
+    /**
+     * @Route("/{id}/watchlist", name="program_watchlist", methods={"GET","POST"})
+     * @param Request $request
+     * @param Program $program
+     * @param EntityManagerInterface $manager
+     * @return Response
+     * @IsGranted("ROLE_SUBSCRIBER")
+     */
+    public function addToWatchlist(Request $request, Program $program, EntityManagerInterface $manager)
+    {
+        $user = $this->getUser();
+        if ($user->isInWatchlist($program)) {
+            $user->removeProgram($program);
+        } else {
+            $user->addProgram($program);
+        }
+        $manager->persist($user);
+        $manager->flush();
+
+        return $this->json([
+            'isInWatchlist' => $user->isInWatchlist($program)
+        ]);
     }
 }

@@ -13,3 +13,15 @@ $primary-color: #FFF4DDB4;
 body{
     background-color:$primary-color;
 }
+
+a.watchlist:hover {
+    color: #45858C;
+}
+
+a.active:hover {
+    color: red;
+}
+.active {
+    color: red;
+}
+
