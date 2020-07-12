@@ -4,6 +4,9 @@
 
 {% block body %}
     <h1>Program index</h1>
+    <div>
+    <a href="{{ path('program_new') }}">Create new</a>
+    </div>
 
     <table class="table">
         <thead>
@@ -12,12 +15,14 @@
                 <th>Summary</th>
                 <th>Poster</th>
                 <th>Acteurs</th>
+                <th>Favoris </th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for program in programs %}
             <tr>
+
                 <td>{{ program.title }}</td>
                 <td>{{ program.summary }}</td>
                 <td>{{ program.poster }}</td>
@@ -28,6 +33,9 @@
                         Aucun acteur pour cette série
                     {% endfor %}
                 </td>
+                <td> <a id="watchlist" href="#"  data-href={{path('program_watchlist', {'id': program.id})}} class="watchlist {{ app.user.isInWatchlist(program) ? 'active' : '' }}">
+                    <i  class="far fa-heart"></i>
+                    </a> </td>
                 <td>
                     <a href="{{ path('program_show', {'slug': program.slug}) }}" class="text-success btn btn-warning mt-3">show</a>
                     {% if is_granted('ROLE_ADMIN') %}
@@ -43,5 +51,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('program_new') }}">Create new</a>
 {% endblock %}
+
+ {% block javascripts %}
+     {{ parent() }}
+     {{ encore_entry_script_tags('watch') }}
+ {% endblock %}
